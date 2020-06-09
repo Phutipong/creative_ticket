@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="ticket_search_view">
+        <field name="name">ticket.search</field>
+        <field name="model">creative.ticket</field>
+        <field name="arch" type="xml">
+            <search string="State Search">
+                <filter string="Available Tickets" name="state_search"
+                        domain="[('state', 'in', ['draft', 'complete'])]"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="ticket_list_view">
+        <field name="name">ticket.list</field>
+        <field name="model">creative.ticket</field>
+        <field name="arch" type="xml">
+            <tree string="Ticket List">
+                <field name="ticket_no"/>
+                <field name="responsible_id"/>
+                <field name="car_id"/>
+                <field name="date_time_delivery"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="ticket_form_view">
+        <field name="name">ticket.form</field>
+        <field name="model">creative.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Ticket Form">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,'complete'"/>
+                    <button name="button_open_creative_ticket" string="พิมพ์ใบจองรถ" type="object"
+                            class="oe_highlight"/>
+                    <button name="button_open_head_delivery_form_one" string="พิมพ์ใบส่งสินค้า" type="object"/>
+                    <button name="button_open_head_delivery_form_two" string="พิมพ์ใบส่งสินค้า(หมายเหตุ)"
+                            type="object"/>
+                    <button name="button_open_delivery_form_one" string="พิมพ์ใบส่งสินค้า(กรอกเอง)" type="object"/>
+                    <button name="button_open_delivery_form_two" string="พิมพ์ใบส่งสินค้า , หมายเหตุ" type="object"/>
+                    <button string="Revise to Draft" type="object" class="oe_highlight" name="do_ticket_draft"
+                            attrs="{'invisible': [('state', 'in', ['draft'])]}"/>
+                    <button string="Complete" type="object" class="oe_highlight" name="do_ticket_completed"
+                            attrs="{'invisible': [('state', 'in', ['complete'])]}"/>
+
+                </header>
+                <sheet>
+                    <h1 attrs="{'invisible': [('ticket_no', '=', False)]}">
+                        <field name="ticket_no"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="responsible_id"/>
+                            <field name="car_id"/>
+                            <field name="car_other"/>
+                            <text>การจองรถเพื่อ</text>
+                            <br></br>
+                            <field name="purpose" type="checkbox"/>
+                            <field name="send_job" type="checkbox"/>
+                            <field name="send_proof" type="checkbox"/>
+                            <field name="receipt_cheques" type="checkbox"/>
+                            <field name="bill_bill" type="checkbox"/>
+                            <field name="purpose_other"/>
+                        </group>
+
+                        <group>
+                            <field name="job_no"/>
+                            <field name="sale_id"/>
+                            <field name="approver"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group>
+                            <field name="customer_company"/>
+                            <field name="contact_name"/>
+                            <field name="department"/>
+                        </group>
+
+                        <group>
+                            <field name="tel"/>
+                            <field name="location"/>
+                            <field name="date_time_delivery"/>
+                        </group>
+                        <field name="note"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="ticket_calendar_view">
+        <field name="name">ticket.calendar</field>
+        <field name="model">creative.ticket</field>
+        <field name="arch" type="xml">
+            <calendar string="Ticket Calendar" date_start="start_time" date_stop="end_time" color="responsible_id"
+                      mode="month">
+                <field name="ticket_no"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="tms_ticket_timeline" model="ir.ui.view">
+        <field name="model">creative.ticket</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="start_time"
+                      date_stop="end_time"
+                      default_group_by="responsible_id"
+                      event_open_popup="true"
+            />
+        </field>
+    </record>
+</odoo>
